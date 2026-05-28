@@ -43,16 +43,11 @@ SpecFlow全工程をワンショットで実行するオーケストレータSki
 ### パイプライン開始時（ステップ0）
 
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-【使用Skill: specflow-pipeline】
-（このSKILL.mdの全文をここに貼り付け）
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
 ## パイプライン実行計画
 
 | ステップ | Skill | 目的 | 予想される主要判断 |
 |--------|-------|------|-----------------|
-| 1 | detect-ambiguity | 曖昧性除去 | 自然言語の形式化 |
+| 1 | detect-ambiguity | 曖昧性除去 | 自然言語による補完 |
 | 2 | review-spec | 4本柱レビュー | 優先度付き改善提案 |
 | 3 | generate-sequence | シーケンス図生成 | 参加者・フローの設計判断 |
 | 4 | detect-spec-diff | 差分検出 | 変更の影響範囲判定 |
@@ -81,7 +76,7 @@ SpecFlow全工程をワンショットで実行するオーケストレータSki
 
 | ステップ | 追記内容 | 使用した暗黙知 | 関連SKILL.md |
 |--------|---------|--------------|-------------|
-| 1 | 〇〇を形式化 | 〇〇という一般知識 | detect-ambiguity/SKILL.md |
+| 1 | 〇〇を補完 | 〇〇という一般知識 | detect-ambiguity/SKILL.md |
 | 2 | 非機能要件を追記 | 〇〇という設計原則 | review-spec/SKILL.md |
 | 3 | エラーパスを追加 | 〇〇という慣習 | generate-sequence/SKILL.md |
 
@@ -92,8 +87,24 @@ SpecFlow全工程をワンショットで実行するオーケストレータSki
 
 - `docs/specification.md` — 最終仕様
 - `docs/sequence.md` — 最終シーケンス図
+- `docs/ai-decision-log.md` — AI意思決定ログ（各ステップが自動追記）
 - `docs/ambiguity-report.md` — 曖昧性レポート（任意）
 - `docs/review-report.md` — レビューレポート（任意）
+
+## パイプライン完了後の推奨アクション
+
+パイプライン完了後、ユーザーに以下を案内する：
+
+```
+## 次のステップ
+
+docs/ai-decision-log.md にAIの判断根拠が蓄積されました。
+
+【推奨】ログを確認してSkillを改善する場合：
+  /refine-skills-from-log
+  → ログのパターンを分析し、SKILL.md改善案を生成します
+  → 採用した改善案はskill-creatorでさらに構造最適化できます
+```
 
 ## 関連Skill
 
@@ -101,3 +112,4 @@ SpecFlow全工程をワンショットで実行するオーケストレータSki
 - `[[detect-ambiguity]]`, `[[review-spec]]`, `[[four-pillars-review]]`
 - `[[generate-sequence]]`, `[[refine-sequence]]`
 - `[[detect-spec-diff]]`, `[[save-spec-git]]`, `[[create-spec-pr]]`
+- `[[refine-skills-from-log]]` — ログからSKILL.md改善案を生成
