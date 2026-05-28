@@ -43,11 +43,6 @@ SpecFlow全工程をワンショットで実行するオーケストレータSki
 ### パイプライン開始時（ステップ0）
 
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-【使用Skill: specflow-pipeline】
-（このSKILL.mdの全文をここに貼り付け）
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
 ## パイプライン実行計画
 
 | ステップ | Skill | 目的 | 予想される主要判断 |
@@ -92,8 +87,29 @@ SpecFlow全工程をワンショットで実行するオーケストレータSki
 
 - `docs/specification.md` — 最終仕様
 - `docs/sequence.md` — 最終シーケンス図
+- `docs/ai-decision-log.md` — AI意思決定ログ（各ステップが自動追記）
 - `docs/ambiguity-report.md` — 曖昧性レポート（任意）
 - `docs/review-report.md` — レビューレポート（任意）
+
+## パイプライン完了後の推奨アクション
+
+パイプライン完了後、ユーザーに以下を案内する：
+
+```
+## 次のステップ
+
+docs/ai-decision-log.md にAIの判断根拠が蓄積されました。
+
+【推奨】ログを確認してSkillを改善する場合：
+  /refine-skills-from-log
+  → ログのパターンを分析し、SKILL.md改善案を生成します
+  → 採用した改善案はskill-creatorでさらに構造最適化できます
+
+【skill-creator利用の流れ】
+  1. /refine-skills-from-log で改善案を確認・採用
+  2. skill-creatorに「このSKILL.mdを改善案に基づいて最適化して」と依頼
+  3. 生成されたSKILL.mdで既存ファイルを置き換え
+```
 
 ## 関連Skill
 
@@ -101,3 +117,4 @@ SpecFlow全工程をワンショットで実行するオーケストレータSki
 - `[[detect-ambiguity]]`, `[[review-spec]]`, `[[four-pillars-review]]`
 - `[[generate-sequence]]`, `[[refine-sequence]]`
 - `[[detect-spec-diff]]`, `[[save-spec-git]]`, `[[create-spec-pr]]`
+- `[[refine-skills-from-log]]` — ログからSKILL.md改善案を生成

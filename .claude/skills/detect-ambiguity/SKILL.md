@@ -1,11 +1,11 @@
 ---
 name: detect-ambiguity
-description: Detect ambiguities in a requirements document and supplement them with formal definitions (sets, predicates, state transitions). Use when the user provides a requirements/specification document (often a .txt or .md file) and asks to analyze ambiguity, find unclear expressions, or convert natural language to formal definitions. Outputs a structured Japanese report plus a fully-revised specification.
+description: Detect ambiguities in a requirements document and supplement them with natural language clarifications. Use when the user provides a requirements/specification document (often a .txt or .md file) and asks to analyze ambiguity, find unclear expressions, or clarify vague descriptions. Outputs a structured Japanese report plus a fully-revised specification in plain language.
 ---
 
 # detect-ambiguity
 
-要件定義書の曖昧性を検出し、形式的定義で補完するSkill。
+要件定義書の曖昧性を検出し、自然言語で補完するSkill。
 
 ## いつ使うか
 
@@ -22,10 +22,11 @@ description: Detect ambiguities in a requirements document and supplement them w
 3. 以下の構造でレポートを生成する：
    - `## 曖昧性検出レポート`
    - `### 検出された曖昧箇所` — 箇所・種別・問題・影響
-   - `### 形式的定義による補完` — 集合論・述語論理・状態遷移
+   - `### 自然言語による補完案` — 各曖昧箇所に対する明確化の文章
    - `### 補完済み要件定義書` — 全文（省略禁止）
 4. ユーザーが指定する場合、結果を `docs/ambiguity-report.md` に保存する
 5. 補完済み仕様書部分は `docs/specification.md` への保存候補としてユーザーに提示する
+6. 透明性出力（ブロック1・ブロック2）の内容を `docs/ai-decision-log.md` に追記する（後述「ログ保存フォーマット」参照）
 
 ## 検出する曖昧性の種類（出典: `app.py` PROMPT_AMBIGUITY）
 
@@ -43,23 +44,14 @@ description: Detect ambiguities in a requirements document and supplement them w
 ## 出力の品質基準
 
 - 検出された曖昧箇所に対し、上記1〜6の種別を必ず付与すること
-- 形式的定義に少なくとも1つの数学記法（集合、関数、状態遷移）が含まれること
+- 補完案はすべて自然言語で記述すること（数学記法・擬似コード・SQL記法は使用しない）
 - 補完済み要件定義書は元の要件の全項目をカバーすること
 
 ## 透明性出力（毎回必須）
 
-このSkillを実行するたびに、以下の3ブロックを出力する。
+このSkillを実行するたびに、以下の2ブロックを出力する。
 
-### ブロック1: 使用Skill（実行冒頭）
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-【使用Skill: detect-ambiguity】
-（このSKILL.mdの全文をここに貼り付け）
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-### ブロック2: 検出根拠ログ（レポートの直後）
+### ブロック1: 検出根拠ログ（レポートの直後）
 
 各曖昧箇所の検出について、以下の形式で記録する。
 「なぜ曖昧と判断したか」の根拠種別（仕様内の矛盾 vs. 一般知識との差異）を明示する。
@@ -71,16 +63,9 @@ description: Detect ambiguities in a requirements document and supplement them w
 |---|---------|-----------------|---------|----------------------|
 | 1 | §2.1「適切なタイミングで〜」 | 「適切」が数値化されておらず解釈が分かれる | 仕様内 | なし |
 | 2 | §3.4 タイムアウト値の未定義 | 時間制約の記述がない | 暗黙知 | HTTPリクエストには一般的に30秒タイムアウトが推奨される知識 |
-
-**形式化の判断根拠**:
-各曖昧箇所に対してどの形式（集合・関数・状態遷移）を適用したかと、その選択理由。
-| # | 適用した形式 | 選択理由 |
-|---|------------|---------|
-| 1 | 述語論理 | 条件の真偽が明確に定義できるため |
-| 2 | 状態遷移 | 排他的な状態間の遷移が存在するため |
 ```
 
-### ブロック3: 暗黙知追記サマリ（出力末尾）
+### ブロック2: 暗黙知追記サマリ（出力末尾）
 
 「補完済み要件定義書」に加筆した内容のうち、**仕様書に明記されていないもの**を一覧化する。
 
@@ -92,8 +77,33 @@ description: Detect ambiguities in a requirements document and supplement them w
 | §2.1 | 「適切なタイミング」を「〇〇秒以内」と定義 | 業界標準レスポンスタイムの知識 | SKILL.md「出力の品質基準」に「数値補完は禁止」と追記 |
 ```
 
+## ログ保存フォーマット
+
+手順6で `docs/ai-decision-log.md` に追記する内容。既存内容の末尾に以下を**追記**する（上書き禁止）。
+
+```markdown
+## 実行 <YYYY-MM-DD HH:MM> — detect-ambiguity
+
+**対象仕様書**: <ファイルパスとバージョン>
+
+### 曖昧性検出 根拠ログ
+
+| # | 検出箇所 | 曖昧と判断した理由 | 根拠種別 | 使用した暗黙知（あれば） |
+|---|---------|-----------------|---------|----------------------|
+（透明性出力ブロック1の表をそのまま転記）
+
+### 暗黙知追記サマリ
+
+| 追記箇所 | 追記内容の概要 | 使用した暗黙知・前提 | 削除・変更する場合の対応 |
+|---------|--------------|-------------------|----------------------|
+（透明性出力ブロック2の表をそのまま転記）
+
+---
+```
+
 ## 関連Skill
 
 - `[[four-pillars-review]]` — 曖昧性除去後に4本柱でレビュー
 - `[[generate-sequence]]` — 補完済み仕様からシーケンス図生成
 - `[[specflow-pipeline]]` — 全工程をオーケストレーション
+- `[[refine-skills-from-log]]` — 蓄積ログからSKILL.md改善案を生成
