@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(cd \"C:\\\\Users\\\\mahir\\\\OneDrive\\\\ドキュメント\\\\修論研究\\\\claude_code_chatbot\" && mkdir -p .claude/skills docs prompts templates examples && ls -la)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/MahiroIkeda/sequence-chatbot_2/main/templates/index.html\" -o \"C:\\\\Users\\\\mahir\\\\OneDrive\\\\ドキュメント\\\\修論研究\\\\claude_code_chatbot\\\\templates\\\\index.html.orig\")",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/MahiroIkeda/sequence-chatbot_2/main/app.py\" -o \"C:\\\\Users\\\\mahir\\\\OneDrive\\\\ドキュメント\\\\修論研究\\\\claude_code_chatbot\\\\app.py.orig\")",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/MahiroIkeda/sequence-chatbot_2/main/README.md\" -o \"C:\\\\Users\\\\mahir\\\\OneDrive\\\\ドキュメント\\\\修論研究\\\\claude_code_chatbot\\\\README.md.orig\")",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/MahiroIkeda/sequence-chatbot_2/main/docs/SPEC_DRIVEN.md\" -o \"C:\\\\Users\\\\mahir\\\\OneDrive\\\\ドキュメント\\\\修論研究\\\\claude_code_chatbot\\\\docs\\\\SPEC_DRIVEN.md\")",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/MahiroIkeda/sequence-chatbot_2/main/docs/specification.md\" -o \"C:\\\\Users\\\\mahir\\\\OneDrive\\\\ドキュメント\\\\修論研究\\\\claude_code_chatbot\\\\docs\\\\specification.md\")",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/MahiroIkeda/sequence-chatbot_2/main/docs/sequence.md\" -o \"C:\\\\Users\\\\mahir\\\\OneDrive\\\\ドキュメント\\\\修論研究\\\\claude_code_chatbot\\\\docs\\\\sequence.md\")",
+      "Bash(cd \"C:\\\\Users\\\\mahir\\\\OneDrive\\\\ドキュメント\\\\修論研究\\\\claude_code_chatbot\" && rm -f *.orig templates/*.orig && ls -la)",
+      "Skill(anthropic-skills:pptx)",
+      "Skill(anthropic-skills:pptx:*)",
+      "Bash(npm root *)",
+      "PowerShell(Get-Command node -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command npm -ErrorAction SilentlyContinue)",
+      "Bash(python -c \"import pptx; print\\(pptx.__version__\\)\")",
+      "Bash(pip install *)",
+      "Bash(python slides/build.py)",
+      "Bash(cd \"C:\\\\Users\\\\mahir\\\\OneDrive\\\\ドキュメント\\\\修論研究\\\\claude_code_chatbot\" && ls -la slides/ && which soffice 2>/dev/null; which libreoffice 2>/dev/null; ls \"/c/Program Files/LibreOffice/program/\" 2>/dev/null | head -5)",
+      "PowerShell($soffice = Get-Command soffice -ErrorAction SilentlyContinue; if \\($soffice\\) { $soffice.Source } else { \"not in PATH\" }; if \\(Test-Path \"C:\\\\Program Files\\\\LibreOffice\\\\program\\\\soffice.exe\"\\) { \"Found: C:\\\\Program Files\\\\LibreOffice\\\\program\\\\soffice.exe\" })",
+      "Bash(python -c ' *)",
+      "Bash(PYTHONIOENCODING=utf-8 python -c ' *)"
+    ]
+  }
+}
